@@ -23,11 +23,26 @@ a.btn{transition:opacity .2s}
 a.btn:hover{opacity:.85;color:inherit}
 img{max-width:100%;height:auto}
 html{scroll-behavior:smooth}
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;padding:8px;margin:-8px;background:none;border:none;cursor:pointer;z-index:70}
+.hamburger span{display:block;width:24px;height:2px;background:#5B1527;transition:transform .25s ease,opacity .25s ease}
+#page.nav-open .hamburger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+#page.nav-open .hamburger span:nth-child(2){opacity:0}
+#page.nav-open .hamburger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+header{position:relative;z-index:60}
+@media (max-width:760px){
+.hamburger{display:flex}
+header nav{position:fixed;top:0;right:0;bottom:0;width:min(320px,82vw);background:#F5ECDD;flex-direction:column;align-items:flex-start;gap:4px;padding:96px 32px 40px;margin:0;transform:translateX(100%);transition:transform .3s ease;box-shadow:-12px 0 36px rgba(42,10,18,.22);overflow-y:auto;z-index:65}
+#page.nav-open header nav{transform:translateX(0)}
+header nav a.nav,header nav a.btn{width:100%}
+header nav a.btn{margin-top:16px;text-align:center}
+.nav-backdrop{position:fixed;inset:0;background:rgba(42,10,18,.45);opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:55}
+#page.nav-open .nav-backdrop{opacity:1;pointer-events:auto}
+}
 </style>
 </head>
 <body>
-<div style="background: #F5ECDD; color: #2A0A12; font-family: 'Jost', system-ui, sans-serif; font-size: 17px; line-height: 1.65">
-<header style="max-width: 1440px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 32px; padding: 20px clamp(20px, 4vw, 56px); box-sizing: border-box"><a href="index.html" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 30px; line-height: 1.2; font-weight: 500; color: #5B1527; padding: 8px 0">Abigail Murugi</a><nav aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 32px"><a href="index.html" class="nav" style="display: inline-block; padding: 12px 0; font-size: 15px; line-height: 20px; letter-spacing: 0.06em; color: #5B1527; border-bottom: 1px solid transparent;">Home</a><a href="portfolio.html" class="nav" style="display: inline-block; padding: 12px 0; font-size: 15px; line-height: 20px; letter-spacing: 0.06em; color: #5B1527; border-bottom: 1px solid transparent;">Portfolio</a><a href="about.html" class="nav" style="display: inline-block; padding: 12px 0; font-size: 15px; line-height: 20px; letter-spacing: 0.06em; color: #5B1527; border-bottom: 1px solid transparent;">About me</a><a href="contact.html" class="btn" style="display: inline-block; padding: 12px 28px; font-size: 15px; line-height: 20px; letter-spacing: 0.06em; background: #5B1527; color: #F5ECDD; border: 1px solid #5B1527">Contact</a></nav></header>
+<div id="page" style="background: #F5ECDD; color: #2A0A12; font-family: 'Jost', system-ui, sans-serif; font-size: 17px; line-height: 1.65">
+<header style="max-width: 1440px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 32px; padding: 20px clamp(20px, 4vw, 56px); box-sizing: border-box"><a href="index.html" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 30px; line-height: 1.2; font-weight: 500; color: #5B1527; padding: 8px 0">Abigail Murugi</a><button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav" onclick="toggleNav(this)"><span></span><span></span><span></span></button><nav id="site-nav" aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 32px"><a href="index.html" class="nav" style="display: inline-block; padding: 12px 0; font-size: 15px; line-height: 20px; letter-spacing: 0.06em; color: #5B1527; border-bottom: 1px solid transparent;">Home</a><a href="portfolio.html" class="nav" style="display: inline-block; padding: 12px 0; font-size: 15px; line-height: 20px; letter-spacing: 0.06em; color: #5B1527; border-bottom: 1px solid transparent;">Portfolio</a><a href="about.html" class="nav" style="display: inline-block; padding: 12px 0; font-size: 15px; line-height: 20px; letter-spacing: 0.06em; color: #5B1527; border-bottom: 1px solid transparent;">About me</a><a href="contact.html" class="btn" style="display: inline-block; padding: 12px 28px; font-size: 15px; line-height: 20px; letter-spacing: 0.06em; background: #5B1527; color: #F5ECDD; border: 1px solid #5B1527">Contact</a></nav></header><div class="nav-backdrop" id="nav-backdrop" onclick="closeNav()"></div>
 <section style="background: #F5ECDD; color: #2A0A12"><div style="max-width: 1440px; margin: 0 auto; padding: 64px clamp(20px, 4vw, 56px) 96px; box-sizing: border-box">
 <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 56px 88px">
 <div style="flex: 1 1 480px; min-width: 0">
@@ -73,5 +88,19 @@ html{scroll-behavior:smooth}
 <p style="margin: 40px 0 0; font-size: 13px; color: #E6D5BC">© 2026 Abigail Murugi. All photographs belong to their respective photographers and the model.</p>
 </div></section>
 </div>
+<script>
+function toggleNav(btn){
+var page=document.getElementById('page');
+var open=page.classList.toggle('nav-open');
+btn.setAttribute('aria-expanded',open?'true':'false');
+}
+function closeNav(){
+var page=document.getElementById('page');
+page.classList.remove('nav-open');
+var btn=document.querySelector('.hamburger');
+if(btn)btn.setAttribute('aria-expanded','false');
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeNav();});
+</script>
 </body>
 </html>
